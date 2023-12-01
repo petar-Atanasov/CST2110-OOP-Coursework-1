@@ -10,7 +10,6 @@ public class SumPart1 {
     public static void main(String[] args) {
         welcomeMessage();
         startGame();
-
     }
 
     public static void startGame() {
@@ -26,7 +25,6 @@ public class SumPart1 {
             System.out.println();
             scoreTable();
             roundCount();
-            System.out.println();
         } else if (input.equals("0")) {
             System.out.println("You chosed to exit the game. Goodbye! ");
             System.exit(0);
@@ -38,48 +36,53 @@ public class SumPart1 {
 
     public static void roundCount() {
         System.out.println();
-        int i = 1;
 // player 1 array 
         int[] scores1 = new int[7];
 // player 2 array        
         int[] scores2 = new int[7];
         int[] dice;
+
+        int i = 1;
         while (i <= ROUND) {
             System.out.println("\n| Round " + i + "  |");
+            System.out.println("\n| Player 1 |");
+
             if (throwOrForfeit()) {
                 dice = arrayDice();
-                System.out.println("\n| Player 1 |");
-                for (int j = 1/*0*/; j <=/*<*/ TURNEACHPLAYER; j++) {
-                    System.out.println("\n| Throw " + j/*(j + 1)*/ + " |");
+
+                for (int j = 0; j < TURNEACHPLAYER; j++) {
+                    System.out.println("\n| Throw " + (j + 1) + " |");
                     System.out.println();
                     String option = selectCategory();
                     if (option.equals("s")) {
                         selection(dice, scores1, j);
                         break;
-//                        continue;
-                    } else if (option.equals("d")) {
-                        dice = defer();
-                    }
-                    scoreTable();
-                }
-            }
-            if (throwOrForfeit()) {
-                dice = arrayDice();
-                System.out.println("\n| Player 2 |");
-                for (int k = 1/*0*/; k <= /*=*/ TURNEACHPLAYER; k++) {
-                    System.out.println("\n| Throw " + k /*(k + 1)*/ + " |");
-                    String option = selectCategory();
-                    if (option.equals("s")) {
-                        selection(dice, scores2, k);
-                        break;
-//                        continue;
+
                     } else if (option.equals("d")) {
                         System.out.println();
                         dice = defer();
                     }
-                    scoreTable();
                 }
             }
+            System.out.println("\n| Player 2 |");
+            if (throwOrForfeit()) {
+                dice = arrayDice();
+
+                for (int k = 0; k < TURNEACHPLAYER; k++) {
+                    System.out.println("\n| Throw " + (k + 1) + " |");
+                    System.out.println();
+                    String option = selectCategory();
+                    if (option.equals("s")) {
+                        selection(dice, scores2, k);
+                        break;
+
+                    } else if (option.equals("d")) {
+                        System.out.println();
+                        dice = defer();
+                    }
+                }
+            }
+            scoreTable();
             i++;
         }
     }
@@ -115,6 +118,7 @@ public class SumPart1 {
         }
         return null;
     }
+// defer method is passed to roundCount 
 
     public static int[] defer() {
 
@@ -171,7 +175,7 @@ public class SumPart1 {
             selection(dice, score, turnNumber);
         }
 // outter loop 
-        for (int i = 0; i < TURNEACHPLAYER; i++) {
+        for (int i = turnNumber; i < TURNEACHPLAYER; i++) {
 // inner loop
             for (int k = 0; k < dice.length; k++) {
                 if (dice[k] == category) {
@@ -179,16 +183,18 @@ public class SumPart1 {
                 }
                 score[category - 1] = countDice * category;
             }
-        }
-        if (countDice < 5) {
-            System.out.println("You have " + countDice + " dices. ");
-            dice = new int[5 - countDice];
-            dice = arrayDice();
-            System.out.println(Arrays.toString(score));
+            if (countDice < 5) {
+                System.out.println("You have " + countDice + " dices. ");
+                dice = new int[5 - countDice];
+                throwOrForfeit();
+                dice = arrayDice();
+//                System.out.println(Arrays.toString(score));
+            }
         }
     }
+
     // creating the dice array 
-    public static int[] arrayDice() {
+    public static int[] arrayDice(int decrease) {
         int[] roll = new int[5];
         for (int i = 0; i < 5; i++) {
             roll[i] = (int) ((Math.random() * 6) + 1);
