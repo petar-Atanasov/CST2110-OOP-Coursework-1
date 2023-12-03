@@ -92,9 +92,11 @@ public class SumPart1 {
 //                    }
                 }
             }
+
             scoreTable(scores1, scores2);
             i++;
         }
+
     }
 
     public static boolean throwOrForfeit() {
@@ -214,33 +216,26 @@ public class SumPart1 {
     public static void scoreTable(int[] score1, int[] score2) {
 //update the score for each player
 // get the total and assign it each round and whoever has a greater total after round 7 win 
+
         System.out.println("\n-------------------------------------------");
         System.out.printf("|%-15s|%-12s|%-12s|", "", "Player 1", "Player 2");
         System.out.print("\n-------------------------------------------");
         System.out.println();
-        System.out.printf("|%-15s|%-12s|%-12s|", "Ones", Arrays.toString(score1), Arrays.toString(score2));
+
+        String[] categories = {"Ones", "Twos", "Threes", "Fours", "Fives", "Sixes", "Sequence(20)"};
+
+        int total1 = 0;
+        int total2 = 0;
+
+        for (int i = 0; i < categories.length; i++) {
+            System.out.printf("|%-15s|%-12s|%-12s|", categories[i], score1[i], score2[i]);
+            System.out.print("\n-------------------------------------------");
+            System.out.println();
+
+            total1 += score1[i];
+            total2 += score2[i];
+        }
+        System.out.printf("|%-15s|%-12s|%-12s|", "TOTAL", total1, total2);
         System.out.print("\n-------------------------------------------");
-        System.out.println();
-        System.out.printf("|%-15s|%-12s|%-12s|", "Twos", Arrays.toString(score1), Arrays.toString(score2));
-        System.out.print("\n-------------------------------------------");
-        System.out.println();
-        System.out.printf("|%-15s|%-12s|%-12s|", "Threes", Arrays.toString(score1), Arrays.toString(score2));
-        System.out.print("\n-------------------------------------------");
-        System.out.println();
-        System.out.printf("|%-15s|%-12s|%-12s|", "Fours", Arrays.toString(score1), Arrays.toString(score2));
-        System.out.print("\n-------------------------------------------");
-        System.out.println();
-        System.out.printf("|%-15s|%-12s|%-12s|", "Fives", Arrays.toString(score1), Arrays.toString(score2));
-        System.out.print("\n-------------------------------------------");
-        System.out.println();
-        System.out.printf("|%-15s|%-12s|%-12s|", "Sixes", Arrays.toString(score1), Arrays.toString(score2));
-        System.out.print("\n-------------------------------------------");
-        System.out.println();
-        System.out.printf("|%-15s|%-12s|%-12s|", "Sequence(20)", " 0 ", " 0 ");
-        System.out.print("\n-------------------------------------------");
-        System.out.println();
-        System.out.printf("|%-15s|%-12s|%-12s|", "TOTAL:", " ", " ");
-        System.out.println("\n-------------------------------------------");
-        /*int total1 = score1 + score1 + score1 + score1 + score1 + score1;*/
     }
 }
