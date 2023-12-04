@@ -43,13 +43,14 @@ public class SumPart1 {
         int[] dice;
 
         int i = 1;
+// count the round and display the player's name
         while (i <= ROUND) {
             System.out.println("\n| Round " + i + "  |");
             System.out.println("\n| Player 1 |");
 
             if (throwOrForfeit()) {
                 dice = arrayDice(5);
-
+// count each player's throw
                 for (int j = 0; j < TURNEACHPLAYER; j++) {
                     System.out.println("\n| Throw " + (j + 1) + " |");
                     System.out.println();
@@ -62,11 +63,6 @@ public class SumPart1 {
                         System.out.println();
                         dice = defer();
                     }
-//                    if (j == 2) {
-//                        System.out.println("Press (s) to select a category. ");
-//                        selectCategory();
-//                        break;
-//                    }
                 }
             }
             System.out.println("\n| Player 2 |");
@@ -85,11 +81,6 @@ public class SumPart1 {
                         System.out.println();
                         dice = defer();
                     }
-//                    if (k == 2) {
-//                        System.out.println("Press (s) to select a category. ");
-//                        selectCategory();
-//                        break;
-//                    }
                 }
             }
 
@@ -108,14 +99,16 @@ public class SumPart1 {
         if (input.equals("t")) {
             desicion = true;
             System.out.println();
+            return desicion;
         } else if (input.equals("f")) {
             System.out.println("You chosed to forfeit your turn. ");
+            return desicion;
         } else {
             System.out.println("Please select the right option. ");
-            throwOrForfeit();
+            return throwOrForfeit();
         }
-        return desicion;
     }
+// sekecting category 
 
     public static String selectCategory() {
         Scanner sc = new Scanner(System.in);
@@ -140,21 +133,29 @@ public class SumPart1 {
         return deferDice;
     }
 
-    public static void selection(int[] dice, int[] score, int turnNumber) {
+    public static boolean selection(int[] dice, int[] score, int turnNumber) {
         Scanner sc = new Scanner(System.in);
         System.out.print("\nSelect Category: " + " ONES(1), " + " TWOS(2), " + " THREES(3), " + " FOURS(4), " + " FIVES(5), " + " SIXES(6), " + " SEQUENCE(7). ");
         String input = sc.nextLine();
         int category = 0;
         int countDice = 0;
+        boolean selectedCategory = false;
 
         if (input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4")
                 || input.equals("5") || input.equals("6") || input.equals("7")) {
             category = Integer.parseInt(input);
+
+            if (score[category - 1] != 0) {
+                System.out.println("\nThe category has already been selected, select a category that has not been selected.");
+                return false;
+            }
+            selectedCategory = true;
         } else {
             System.out.println("\nPlease select the right category. ");
             selection(dice, score, turnNumber);
-            return;
+            return false;
         }
+
 // outter loop 
         for (int i = turnNumber; i < TURNEACHPLAYER - 1; i++) {
 // inner loop
@@ -162,15 +163,18 @@ public class SumPart1 {
                 if (dice[k] == category) {
                     countDice++;
                 }
+// get the score for each player 
                 score[category - 1] = countDice * category;
             }
             if (countDice < 5) {
                 System.out.println("You set aside " + countDice + " dices. ");
                 dice = new int[5 - countDice];
-// give an option if the player wants to trow again 
-                System.out.println("\nPress (t) to throw or (s) to select a category. ");
+// give an option if the player wants to trow again or forfeit
+                System.out.println("\nPress (t) to throw or (f) forfeit. ");
                 input = "";
                 dice = new int[5 - countDice];
+// depends on the input, while loop is iterating and cheking what have neen entered 
+
                 while (!input.equals("t")) {
                     input = sc.nextLine();
                     switch (input) {
@@ -178,9 +182,8 @@ public class SumPart1 {
                             dice = arrayDice(5 - countDice);
                             countDice = 5;
                             break;
-                        case "s":
-                            selection(dice, score, turnNumber);
-                            return;
+                        case "f":
+                            return false;
                         default:
                             System.out.println("\nPlease enter the right input. ");
                             break;
@@ -188,6 +191,7 @@ public class SumPart1 {
                 }
             }
         }
+        return true;
     }
 
     // creating the dice array and decrease it after category is set 
