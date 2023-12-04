@@ -57,7 +57,7 @@ public class SumPart1 {
                     String option = selectCategory();
                     if (option.equals("s")) {
                         selection(dice, scores1, j);
-                        break;
+//                        break;
 
                     } else if (option.equals("d")) {
                         System.out.println();
@@ -75,7 +75,7 @@ public class SumPart1 {
                     String option = selectCategory();
                     if (option.equals("s")) {
                         selection(dice, scores2, k);
-                        break;
+//                        break;
 
                     } else if (option.equals("d")) {
                         System.out.println();
@@ -147,8 +147,8 @@ public class SumPart1 {
 
             if (score[category - 1] != 0) {
                 System.out.println("\nThe category has already been selected, select a category that has not been selected.");
-                return false;
-            }
+                return selection(dice, score, turnNumber);
+            } 
             selectedCategory = true;
         } else {
             System.out.println("\nPlease select the right category. ");
@@ -161,10 +161,10 @@ public class SumPart1 {
 // inner loop
             for (int k = 0; k < dice.length; k++) {
                 if (dice[k] == category) {
-                    countDice++;
+                    countDice+= category; // countDice++;
                 }
 // get the score for each player 
-                score[category - 1] = countDice * category;
+                score[category - 1] = countDice; // countDice * category;
             }
             if (countDice < 5) {
                 System.out.println("You set aside " + countDice + " dices. ");
@@ -174,7 +174,6 @@ public class SumPart1 {
                 input = "";
                 dice = new int[5 - countDice];
 // depends on the input, while loop is iterating and cheking what have neen entered 
-
                 while (!input.equals("t")) {
                     input = sc.nextLine();
                     switch (input) {
