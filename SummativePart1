@@ -132,7 +132,7 @@ public class SumPart1 {
         return deferDice;
     }
 
-    public static int[] selection(int[] dice, int[] score, int turnNumber) {
+    public static int[] selection(int[] dice, int[] score, int throwNumber) {
         Scanner sc = new Scanner(System.in);
         System.out.print("\nSelect Category: " + " ONES(1), " + " TWOS(2), " + " THREES(3), " + " FOURS(4), " + " FIVES(5), " + " SIXES(6), " + " SEQUENCE(7). ");
         String input = sc.nextLine();
@@ -145,57 +145,72 @@ public class SumPart1 {
 
             if (category == 7) {
                 System.out.println("\nSEQUENCE(20) selected. ");
-                for (int j = 0; j < dice.length; j++) {
 
-                    System.out.print("\n" + (j + 1) + ". [" + dice[j] + "] ");
-                }
+                int count = 0;
+                int[] sequenceDice = new int[5];
 
-                System.out.println("\nPlease select which dice you want to keep.(e.g. 1, 2 ,3) or enter (END) to move forward . ");
-                input = " ";
-                int[] sequenceDiceSelection;
-                sequenceDiceSelection = new int[5];
-                int i = 0;
-                while (!"END".equals(input)) {
+                for (int i = throwNumber; i < TURNEACHPLAYER; i++) {
+                    for (int j = 0; j < dice.length; j++) {
 
-                    input = sc.nextLine();
-                    switch (input) {
-
-                        case "1":
-                        case "2":
-                        case "3":
-                        case "4":
-                        case "5":
-                            sequenceDiceSelection[i] = dice[Integer.parseInt(input) - 1];
-                            i++;
-                            System.out.print(" [" + sequenceDiceSelection[i] + "] ");
-                            break;
-                        case "END":
-                            System.out.println("You have select END.  ");
-                            return score;
-                        default:
-                            System.out.println("\nPlease enter the right input. ");
-                            return sequenceDiceSelection;
+                        System.out.print("\n" + (j + 1) + ". [" + dice[j] + "] ");
                     }
-                    Arrays.sort(dice);
-                }
 
-                if (Arrays.equals(dice, new int[]{1, 2, 3, 4, 5})
-                        || Arrays.equals(dice, new int[]{2, 3, 4, 5, 6})) {
-                    score[6] = 20;
-                } else {
-                    System.out.println();
-                    System.out.println("You do not have SEQUENCE.");
-                    score[6] = 0;
+                    System.out.println("\nPlease select which dice you want to keep or enter (END) to move forward . ");
+                    input = "";
+                    while (!"END".equals(input)) {
+
+                        input = sc.nextLine();
+                        switch (input) {
+                            case "1":
+                            case "2":
+                            case "3":
+                            case "4":
+                            case "5":
+
+                                if ((count < 5) || !"END".equals(input)) {
+                                    sequenceDice[count++] = dice[Integer.parseInt(input) - 1];
+                                    System.out.print(" [" + dice[Integer.parseInt(input) - 1] + "] ");
+                                } else {
+                                    System.out.println("\nYou have selected the maximim number of dice");
+                                }
+                                break;
+                            case "END":
+                                System.out.println("You have select END. ");
+                                break;
+
+                            default:
+                                System.out.println("\nPlease enter the right input. ");
+                                break;
+                        }
+                    }
+                    if (count <= 5) {
+                        dice = new int[5 - count];
+                        dice = arrayDice(5 - count);
+                        int[] combinedDice = new int[5];
+// combine the dice // 
+                        System.arraycopy(sequenceDice, 0, combinedDice, 0, sequenceDice.length);
+// then copy the dice of the remaining dice
+                        System.arraycopy(dice, sequenceDice.length, combinedDice, dice.length);
+                    }
+
+                    if (Arrays.equals(dice, new int[]{1, 2, 3, 4, 5})
+                            || Arrays.equals(dice, new int[]{2, 3, 4, 5, 6})) {
+                        score[6] = 20;
+                    } else {
+                        System.out.println();
+                        System.out.println("You do not have SEQUENCE.");
+                        score[6] = 0;
+                    }
                 }
             }
 
             if (score[category - 1] != 0) {
                 System.out.println("\nThe category has already been selected, select a category that has not been selected.");
-                selection(dice, score, turnNumber);
+                selection(dice, score, throwNumber);
             }
         } else {
             System.out.println("\nPlease select the right category. ");
-            selection(dice, score, turnNumber);
+            selection(dice, score, throwNumber);
         }
 
 // outter loop 
@@ -215,7 +230,7 @@ public class SumPart1 {
 
         System.out.println("\nYou set aside " + countDice + " dice.");
 
-        for (int i = turnNumber; i < TURNEACHPLAYER - 1; i++) {
+        for (int i = throwNumber; i < TURNEACHPLAYER - 1; i++) {
             if (countDice < 5) {
                 System.out.println();
                 dice = new int[5 - countDice];
