@@ -144,6 +144,45 @@ public class SumPart1 {
             category = Integer.parseInt(input);
 
             if (category == 7) {
+                System.out.println("\nSEQUENCE(20) selected. ");
+
+                for (int i = 0; i < 6; i++) {
+
+                    for (int j = 0; j < dice[0]; j++) {
+                        System.out.println(i);
+                        System.out.print("\n [" + dice[j] + "] ");
+                    }
+                }
+                System.out.println("Please select which dices you want to keep separated with space.(e.g. 1, 2 ,3) or enter 0 for none. ");
+                input = " ";
+                while (!input.equals("0") /*|| !input.equals("1") || !input.equals("2")
+                        || !input.equals("3") || !input.equals("4") || !input.equals("5")*/) {
+
+                    input = sc.nextLine();
+                    switch (input) {
+                        case "0":
+                            System.out.println("None. ");
+                            break;
+                        case "1":
+                            System.out.print(dice[0]);
+                            break;
+                        case "2":
+                            System.out.print(dice[1]);
+                            break;
+                        case "3":
+                            System.out.print(dice[2]);
+                            break;
+                        case "4":
+                            System.out.print(dice[3]);
+                            break;
+                        case "5":
+                            System.out.print(dice[4]);
+                        default:
+                            System.out.println("\nPlease enter the right input. ");
+                            break;
+                    }
+                    Arrays.sort(dice);
+                }
 
                 if (Arrays.equals(dice, new int[]{1, 2, 3, 4, 5})
                         || Arrays.equals(dice, new int[]{2, 3, 4, 5, 6})) {
@@ -189,7 +228,7 @@ public class SumPart1 {
                 System.out.println("\nPress (t) to throw or (f) forfeit. ");
                 input = "";
 
-// depends on the input, while loop is iterating and cheking what have neen entered 
+// depends on the input, while loop is iterating and cheking what have been entered 
                 while (!input.equals("t")) {
                     input = sc.nextLine();
                     switch (input) {
@@ -235,7 +274,7 @@ public class SumPart1 {
         System.out.println("\nWelcome to Dice game.");
         System.out.println("\nThis game is played only from two players.");
         System.out.println("\nEach player has 7 rounds and 3 throws of 5 dices.");
-        System.out.println("\nIf your dices throws a number that you selected, "
+        System.out.println("\nIf your dices throws a number of category that you selected, "
                 + "it's added automatically to your set aside dices. ");
         System.out.println("\nThe winner is the first player that"
                 + " has greater score than the other. ");
