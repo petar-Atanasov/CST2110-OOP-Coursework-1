@@ -145,41 +145,36 @@ public class SumPart1 {
 
             if (category == 7) {
                 System.out.println("\nSEQUENCE(20) selected. ");
+                for (int j = 0; j < dice.length; j++) {
 
-                for (int i = 0; i < 6; i++) {
-
-                    for (int j = 0; j < dice[0]; j++) {
-                        System.out.println(i);
-                        System.out.print("\n [" + dice[j] + "] ");
-                    }
+                    System.out.print("\n" + (j + 1) + ". [" + dice[j] + "] ");
                 }
-                System.out.println("Please select which dices you want to keep separated with space.(e.g. 1, 2 ,3) or enter 0 for none. ");
+
+                System.out.println("\nPlease select which dice you want to keep.(e.g. 1, 2 ,3) or enter (END) to move forward . ");
                 input = " ";
-                while (!input.equals("0") /*|| !input.equals("1") || !input.equals("2")
-                        || !input.equals("3") || !input.equals("4") || !input.equals("5")*/) {
+                int[] sequenceDiceSelection;
+                sequenceDiceSelection = new int[5];
+                int i = 0;
+                while (!"END".equals(input)) {
 
                     input = sc.nextLine();
                     switch (input) {
-                        case "0":
-                            System.out.println("None. ");
-                            break;
+
                         case "1":
-                            System.out.print(dice[0]);
-                            break;
                         case "2":
-                            System.out.print(dice[1]);
-                            break;
                         case "3":
-                            System.out.print(dice[2]);
-                            break;
                         case "4":
-                            System.out.print(dice[3]);
-                            break;
                         case "5":
-                            System.out.print(dice[4]);
+                            sequenceDiceSelection[i] = dice[Integer.parseInt(input) - 1];
+                            i++;
+                            System.out.print(" [" + sequenceDiceSelection[i] + "] ");
+                            break;
+                        case "END":
+                            System.out.println("You have select END.  ");
+                            return score;
                         default:
                             System.out.println("\nPlease enter the right input. ");
-                            break;
+                            return sequenceDiceSelection;
                     }
                     Arrays.sort(dice);
                 }
@@ -218,7 +213,7 @@ public class SumPart1 {
         }
         System.out.println();
 
-        System.out.println("\nYou set aside " + countDice + " dices.");
+        System.out.println("\nYou set aside " + countDice + " dice.");
 
         for (int i = turnNumber; i < TURNEACHPLAYER - 1; i++) {
             if (countDice < 5) {
@@ -241,7 +236,7 @@ public class SumPart1 {
                                 }
                                 score[category - 1] = countDice * category;
                             }
-                            System.out.println("\nYou set aside " + countDice + " dices. ");
+                            System.out.println("\nYou set aside " + countDice + " dice. ");
                             break;
                         case "f":
                             return score;
@@ -273,9 +268,9 @@ public class SumPart1 {
     public static void welcomeMessage() {
         System.out.println("\nWelcome to Dice game.");
         System.out.println("\nThis game is played only from two players.");
-        System.out.println("\nEach player has 7 rounds and 3 throws of 5 dices.");
-        System.out.println("\nIf your dices throws a number of category that you selected, "
-                + "it's added automatically to your set aside dices. ");
+        System.out.println("\nEach player has 7 rounds and 3 throws of 5 dice.");
+        System.out.println("\nIf your dice throws a number of category that you selected, "
+                + "it's added automatically to your set aside dice. ");
         System.out.println("\nThe winner is the first player that"
                 + " has greater score than the other. ");
         System.out.println("\nHope you have fun playing it. ");
