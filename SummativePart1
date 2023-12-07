@@ -69,7 +69,7 @@ public class SumPart1 {
                             break;
 
                         } else if (option.equals("d")) {
-                            System.out.println("You can only select, please try again. ");
+                            System.out.println("\nYou can only select, please try again. ");
                             j = 1;
                         }
                     }
@@ -99,7 +99,7 @@ public class SumPart1 {
                             scores2 = selection(dice, scores2, k);
                             break;
                         } else if (option.equals("d")) {
-                            System.out.println("You can only select, please try again");
+                            System.out.println("\nYou can only select, please try again. ");
                             k = 1;
                         }
                     }
@@ -207,6 +207,11 @@ public class SumPart1 {
             }
 
             if (category == 7) {
+                if (score[6] != 0) {
+                    System.out.println("\nThe category has already been selected, select a category that has not been selected.");
+                    return selection(dice, score, throwNumber);
+                }
+
                 System.out.println("\nSEQUENCE(20) selected. ");
 
                 int count = 0;
@@ -270,11 +275,11 @@ public class SumPart1 {
                         } else {
                             System.out.println();
                             System.out.println("You do not have SEQUENCE.");
-                            score[6] = 0;
+                            score[6] = -1;
                         }
                     }
                 }
-//                if (score[category - 1] != 0) {
+//                if (score[category - 1] == 0) {
 //                    System.out.println("\nThe category has already been selected, select a category that has not been selected.");
 //                    return selection(dice, score, throwNumber);
 //                }
@@ -379,6 +384,14 @@ public class SumPart1 {
         int total1 = 0;
         int total2 = 0;
 
+        if (score1[6] == -1) {
+            total1 += 1;
+        }
+
+        if (score2[6] == -1) {
+            total2 += 1;
+        }
+
         for (int i = 0; i < categories.length; i++) {
             String output = "";
             if (score1[i] == -1) {
@@ -396,7 +409,7 @@ public class SumPart1 {
             System.out.printf("|%-15s|%-12s|%-12s|", categories[i], output, output2);
             System.out.print("\n-------------------------------------------");
             System.out.println();
-
+            
             total1 += score1[i];
             total2 += score2[i];
         }
