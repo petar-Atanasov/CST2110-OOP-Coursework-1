@@ -37,9 +37,9 @@ public class SumPart1 {
 
     public static void roundCount() {
 // player 1 array 
-        int[] scores1 = new int[]{-1, -1, -1, -1, -1, -1, -1};
+        int[] scores1 = new int[]{0, 0, 0, 0, 0, 0, 0};
 // player 2 array        
-        int[] scores2 = new int[]{-1, -1, -1, -1, -1, -1, -1};
+        int[] scores2 = new int[]{0, 0, 0, 0, 0, 0, 0};
         int[] dice;
         int i = 1;
 // count the round and display the player's name
@@ -77,6 +77,8 @@ public class SumPart1 {
             }
             System.out.println("\n| Player 2 |");
             if (throwOrForfeit()) {
+                System.out.println("The throw is. ");
+                System.out.println("-------------");
                 dice = arrayDice(5);
 
                 for (int k = 0; k < TURNEACHPLAYER; k++) {
@@ -107,7 +109,29 @@ public class SumPart1 {
             i++;
         }
         System.out.println();
-        System.out.println("Game is over");
+        System.out.println("--------------");
+        System.out.println("| Game Over. | ");
+        System.out.println("--------------");
+
+        System.out.println("\nThe winner is: ");
+        int sum1 = 0;
+        int sum2 = 0;
+
+        for (int score : scores1) {
+            sum1 += score;
+        }
+
+        for (int score : scores2) {
+            sum2 += score;
+        }
+
+        if (sum1 > sum2) {
+            System.out.println("Player 1 ");
+        } else if (sum2 > sum1) {
+            System.out.println("Player 2 ");
+        } else {
+            System.out.println("It's a tie. ");
+        }
     }
 
     public static boolean throwOrForfeit() {
@@ -146,7 +170,8 @@ public class SumPart1 {
 
     public static int[] defer() {
 
-//        System.out.println("You have select to defer your throw. ");
+        System.out.println("The defer throw is. ");
+        System.out.println("------------------");
         int[] deferDice = arrayDice(5);
         System.out.println();
         return deferDice;
@@ -156,11 +181,11 @@ public class SumPart1 {
         Arrays.sort(sequenceDice);
 // for loop here check if the arrays is sorted in order
         for (int i = 0; i < sequenceDice.length - 1; i++) {
-            System.out.println(sequenceDice[i]);
-            if (sequenceDice[i] - sequenceDice[i + 1] != 0) {
+//            System.out.println("you have " + sequenceDice[i] + " dice. ");
+            if (sequenceDice[i] - sequenceDice[i + 1] != -1) {
                 return false;
             }
-            
+
         }
         return true;
     }
@@ -176,7 +201,7 @@ public class SumPart1 {
                 || input.equals("5") || input.equals("6") || input.equals("7")) {
             category = Integer.parseInt(input);
 
-            if (score[category - 1] != -1) {
+            if (score[category - 1] != 0) {
                 System.out.println("\nThe category has already been selected, select a category that has not been selected.");
                 return selection(dice, score, throwNumber);
             }
@@ -207,18 +232,17 @@ public class SumPart1 {
 
                                 if ((count < 5) || !"END".equals(input)) {
                                     sequenceDice[count++] = dice[Integer.parseInt(input) - 1];
-//                                    System.out.print(" [" + dice[Integer.parseInt(input) - 1] + "] ");
+
                                 } else {
                                     System.out.println("\nYou have selected the maximim number of dice");
                                 }
                                 break;
                             case "END":
-                                System.out.println("You have select END. ");
-                                System.out.println(count);
+//                                System.out.println("You have select END. ");
+                                System.out.println("\nYou kept " + count + " dice.");
                                 if (count == 0) {
                                     sequenceDice = new int[0];
                                 }
-
                                 break;
 
                             default:
@@ -228,26 +252,32 @@ public class SumPart1 {
                         }
                     }
                     if (count <= 5) {
-                        System.out.println(isSequence(dice));
                         dice = new int[5 - count];
                         dice = arrayDice(5 - count);
+//                        System.out.println("The dice which you threw is " + "[" + Arrays.toString(dice) + "] ");
                         int[] combinedDice = new int[5];
-                        int[] newDice = new int[count];
+                        //int[] newDice = new int[count];
 // combine the dice // 
-                        System.arraycopy(sequenceDice, 0, combinedDice, 0, sequenceDice.length);
+                        System.arraycopy(sequenceDice, 0, combinedDice, 0, count);
 // then copy the dice of the remaining dice
-                        if (newDice.length > 0) {
-                            System.arraycopy(dice, 0, newDice, 0, dice.length);
+                        if (dice.length > 0) {
+                            System.arraycopy(dice, 0, combinedDice, count, dice.length);
                         }
                         if (isSequence(combinedDice)) {
                             score[6] = 20;
+                            System.out.println("SEQUENCE found. ");
+                            break;
                         } else {
                             System.out.println();
                             System.out.println("You do not have SEQUENCE.");
-                            score[6] = 0 ;
+                            score[6] = 0;
                         }
                     }
                 }
+//                if (score[category - 1] != 0) {
+//                    System.out.println("\nThe category has already been selected, select a category that has not been selected.");
+//                    return selection(dice, score, throwNumber);
+//                }
             } else {
                 for (int k = 0; k < dice.length; k++) {
                     if (dice[k] == category) {
@@ -258,8 +288,9 @@ public class SumPart1 {
                 }
                 System.out.println();
                 System.out.println("Your throw from above was: ");
+                System.out.println("--------------------------");
                 for (int j = 0; j < dice.length; j++) {
-                    System.out.print(" [" + dice[j] + "] ");
+                    System.out.print("[" + dice[j] + "] ");
                 }
                 System.out.println();
 
@@ -272,14 +303,16 @@ public class SumPart1 {
 // give an option if the player wants to throw again or forfeit
                         System.out.println("\nPress (t) to throw or (f) forfeit. ");
                         input = "";
-
 // depends on the input, while loop is iterating and cheking what have been entered 
                         while (!input.equals("t")) {
                             input = sc.nextLine();
                             switch (input) {
                                 case "t":
                                     System.out.println();
+                                    System.out.println("The new thrown dice is: ");
+                                    System.out.println("-----------------------");
                                     dice = arrayDice(5 - countDice);
+
                                     for (int k = 0; k < dice.length; k++) {
                                         if (dice[k] == category) {
                                             countDice++;
@@ -298,16 +331,14 @@ public class SumPart1 {
                     }
                 }
             }
-
         } else {
             System.out.println("\nPlease select the right category. ");
             selection(dice, score, throwNumber);
         }
-
         return score;
     }
-    // creating the dice array and decrease it after category is set 
 
+    // creating the dice array and decrease it after category is set 
     public static int[] arrayDice(int decrease) {
         int[] roll = new int[decrease];
         int i = 0;
@@ -320,8 +351,8 @@ public class SumPart1 {
         System.out.println();
         return roll;
     }
-// Display the welcome message after starting the game 
 
+// Display the welcome message after starting the game 
     public static void welcomeMessage() {
         System.out.println("\nWelcome to Dice game.");
         System.out.println("\nThis game is played only from two players.");
@@ -332,12 +363,12 @@ public class SumPart1 {
                 + " has greater score than the other. ");
         System.out.println("\nHope you have fun playing it. ");
     }
-// Printed Score table 
 
+// Printed Score table 
     public static void scoreTable(int[] score1, int[] score2) {
+
 //update the score for each player
 // get the total and assign it each round and whoever has a greater total after round 7 win 
-
         System.out.println("\n-------------------------------------------");
         System.out.printf("|%-15s|%-12s|%-12s|", "", "Player 1", "Player 2");
         System.out.print("\n-------------------------------------------");
@@ -357,12 +388,12 @@ public class SumPart1 {
             }
             String output2 = "";
             if (score2[i] == -1) {
-                output2 = "";
+                output2 = "0";
             } else {
                 output2 = "" + score2[i];
             }
 
-            System.out.printf("|%-15s|%-12s|%-12s|", categories[i], score1[i], score2[i]);
+            System.out.printf("|%-15s|%-12s|%-12s|", categories[i], output, output2);
             System.out.print("\n-------------------------------------------");
             System.out.println();
 
